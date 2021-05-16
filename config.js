@@ -10,7 +10,13 @@ const commands = {
   "LIST_SCORE": "listsores",
 }
 
+const mongo = {
+  connectionString: process.env.DB_CONNECTION_STRING || 'mongodb://localhost:27017/entourage-bot',
+  contentDatabaseName: process.env.DATABASE_NAME || 'entourage-bot',
+}
+
 module.exports = {
   prefix,
   commands,
+  mongo,
 }
