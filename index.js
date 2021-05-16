@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const { prefix, commands } = require('./config')
-const { formatComands, getUserFromMention } = require('./utils')
+const { formatComands, getUserFromMention, formatListScores } = require('./utils')
 
 
 const dotenv = require('dotenv');
@@ -15,7 +15,6 @@ const executeCommand = ({ command, argument, message, server }) => {
     [commands.DEFAULT_COMMAND]: () => {
       const user = getUserFromMention(argument, client)
       total = total.map(u => ((u.username === user.username) ? { ...u, score: u.score + 1 } : u))
-      console.log(total)
       message.channel.send(`${argument} es un PUTO!!!`)
     },
     [commands.WARZONE_COMMAND]: () => message.channel.send('WARZONEEEE @everyone !!!'),
@@ -24,7 +23,6 @@ const executeCommand = ({ command, argument, message, server }) => {
     [commands.ADD_PUTO]: () => { // TODO
       const user = getUserFromMention(argument, client)
       total.push({ username: user.username, id: user.id, serverId: server, score: 0 })
-      console.log(total)
       message.channel.send(`${argument} ahora es un puto, ya hay un total de ${(total || []).length} putos`)
     },
     [commands.TODOS]: () => {
@@ -32,8 +30,7 @@ const executeCommand = ({ command, argument, message, server }) => {
       message.channel.send('Sois todos unos PUTASOS')
     },
     [commands.LIST_SCORE]: () => {
-      const list = total.map(user => (`${user.username}: ${user.score} pts`))
-      const formattedScoreList = list.join('\r\n')
+      const formattedScoreList = formatListScores(total)
       message.channel.send(formattedScoreList)
     },
   };

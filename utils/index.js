@@ -7,7 +7,10 @@ const getUserFromMention = (mention, client) => {
   return client.users.cache.get(id)
 }
 
+const formatListScores = (users) => users.map(user => (`${user.username}: ${user.score} pts`)).join('\r\n')
+
 module.exports = {
   getUserFromMention,
   formatComands,
+  formatListScores,
 }

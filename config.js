@@ -7,7 +7,7 @@ const commands = {
   "SHOW_ALL": "commands",
   "ADD_PUTO": "addputo",
   "TODOS": "todos",
-  "LIST_SCORE": "listsores",
+  "LIST_SCORE": "listscores",
 }
 
 const mongo = {
