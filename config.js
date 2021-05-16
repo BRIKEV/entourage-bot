@@ -6,7 +6,8 @@ const commands = {
   "JAVA_COMMAND": "java",
   "SHOW_ALL": "commands",
   "ADD_PUTO": "addputo",
-  "TODOS": "todos"
+  "TODOS": "todos",
+  "LIST_SCORE": "listsores",
 }
 
 module.exports = {
