@@ -11,12 +11,6 @@ const controller = ({ command, userId, mention, message, serverId }, store, clie
     [commands.WARZONE_COMMAND]: () => message.channel.send('WARZONEEEE @everyone !!!'),
     [commands.JAVA_COMMAND]: () => message.channel.send(':poop:'),
     [commands.SHOW_ALL]: () => message.channel.send(formatCommands(commands)),
-    [commands.ADD_PUTO]: async () => {
-      const user = client.users.cache.get(userId)
-      await store.addUser({ username: user.username, id: user.id, serverId })
-      const totalUsers = await store.listUsers({ serverId })
-      message.channel.send(`${mention} ahora es un puto, ya hay un total de ${(totalUsers || []).length} putos`)
-    },
     [commands.TODOS]: async () => {
       await store.addScoreToUsers({ serverId })
       message.channel.send('Sois todos unos PUTASOS')

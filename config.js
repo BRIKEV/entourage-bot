@@ -5,7 +5,6 @@ const commands = {
   WARZONE_COMMAND: 'warson',
   JAVA_COMMAND: 'java',
   SHOW_ALL: 'commands',
-  ADD_PUTO: 'addputo',
   TODOS: 'todos',
   LIST_SCORE: 'listscores',
   REMOVE_USER: 'removeputo',
