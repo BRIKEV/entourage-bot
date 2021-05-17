@@ -1,50 +1,27 @@
 const Discord = require('discord.js')
-const { prefix, commands } = require('./config')
-const { formatComands, getUserFromMention, formatListScores } = require('./utils')
+const { commands } = require('./config')
+const initStore = require('./db/store')
+const { commandRegex } = require('./utils')
+const commandController = require('./controller')
 
 
-const dotenv = require('dotenv');
+const dotenv = require('dotenv')
 
 const client = new Discord.Client()
-dotenv.config();
+dotenv.config()
 
-let total = [] // TODO: db integration
+initStore().then((store) => {
+  client.on('message', (message) => {
+    if (message.author.bot) return
+    const serverId = message.guild.id
+    const matches = [...message.content.matchAll(commandRegex(commands))]
+    if (!matches.length) return
+    matches.forEach(args => {
+      const [_, command, mention, userId] = args
+      commandController({ command, userId, mention, message, serverId }, store, client)
+    })
+  });
 
-const executeCommand = ({ command, argument, message, server }) => {
-  const allCommands = {
-    [commands.DEFAULT_COMMAND]: () => {
-      const user = getUserFromMention(argument, client)
-      total = total.map(u => ((u.username === user.username) ? { ...u, score: u.score + 1 } : u))
-      message.channel.send(`${argument} es un PUTO!!!`)
-    },
-    [commands.WARZONE_COMMAND]: () => message.channel.send('WARZONEEEE @everyone !!!'),
-    [commands.JAVA_COMMAND]: () => message.channel.send(':poop:'),
-    [commands.SHOW_ALL]: () => message.channel.send(formatComands(commands)),
-    [commands.ADD_PUTO]: () => { // TODO
-      const user = getUserFromMention(argument, client)
-      total.push({ username: user.username, id: user.id, serverId: server, score: 0 })
-      message.channel.send(`${argument} ahora es un puto, ya hay un total de ${(total || []).length} putos`)
-    },
-    [commands.TODOS]: () => {
-      total = total.map(user => ({ ...user, score: user.score + 1 }))
-      message.channel.send('Sois todos unos PUTASOS')
-    },
-    [commands.LIST_SCORE]: () => {
-      const formattedScoreList = formatListScores(total)
-      message.channel.send(formattedScoreList)
-    },
-  };
-  (allCommands[command])()
-}
+  client.login(process.env.BOT_TOKEN)
 
-client.on('message', (message) => {
-  if (message.author.bot) return
-  if (!message.content.startsWith(prefix)) return
-  const commandBody = message.content.slice(prefix.length)
-  const args = commandBody.split(' ')
-  const server = message.guild.id
-  const [command, argument] = args
-  executeCommand({ command, argument, message, server })
-});
-
-client.login(process.env.BOT_TOKEN)
+})

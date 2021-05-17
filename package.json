@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "docker": "docker-compose --file docker-compose.yml pull && docker-compose --file docker-compose.yml up -d --force-recreate"
   },
   "keywords": [],
   "author": "brikev",
