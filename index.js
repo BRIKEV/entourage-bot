@@ -14,6 +14,7 @@ initStore().then((store) => {
   client.on('message', (message) => {
     if (message.author.bot) return
     const serverId = message.guild.id
+    console.log(`Recived message from server: ${serverId}`)
     const matches = [...message.content.matchAll(commandRegex(commands))]
     if (!matches.length) return
     matches.forEach(args => {
